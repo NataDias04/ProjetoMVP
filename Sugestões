@@ -1,0 +1,81 @@
+Melhorias na Lógica (Backend - app.py):
+Cadastro de Usuários e Autenticação:
+
+Descrição: Implemente um sistema de registro e login para que os usuários possam salvar seus planos de estudo e acessá-los posteriormente.
+Tecnologias: Utilize Flask-Login ou Flask-Security para gerenciar a autenticação.
+Persistência de Dados:
+
+Descrição: Armazene os planos de estudo em um banco de dados para que os usuários possam recuperar, editar ou excluir planos anteriores.
+Tecnologias: Use um banco de dados como SQLite (para desenvolvimento) ou PostgreSQL/MySQL (para produção). Utilize SQLAlchemy como ORM.
+Feedback do Usuário:
+
+Descrição: Permita que os usuários forneçam feedback sobre a eficácia dos planos de estudo gerados, o que pode ser usado para ajustar a lógica de geração de planos futuros.
+Implementação: Adicione um formulário de feedback na página de resultados (study_plan.html) e armazene as respostas no banco de dados.
+Histórico de Planos de Estudo:
+
+Descrição: Mantenha um histórico dos planos de estudo gerados para que o usuário possa revisitar planos anteriores.
+Implementação: Crie uma página que lista todos os planos de estudo do usuário, com opções para visualizar, editar ou excluir.
+Algoritmo de Recomendação Aprimorado:
+
+Descrição: Melhore a lógica de distribuição do tempo, considerando mais fatores, como:
+Data de prova ou prazo para estudar o tópico.
+Dependência entre tópicos (por exemplo, é necessário entender o Tópico A antes do Tópico B).
+Nível de motivação ou interesse do usuário.
+Integração com APIs Externas:
+
+Descrição: Integre seu aplicativo com APIs que fornecem conteúdo educacional, como vídeos, artigos ou exercícios relacionados aos tópicos.
+Implementação: Após gerar o plano de estudo, forneça links para recursos recomendados.
+Notificações por Email:
+
+Descrição: Envie o plano de estudo por email ou envie lembretes diários para os usuários.
+Tecnologias: Use Flask-Mail para enviar emails.
+
+
+
+Melhorias no Frontend:
+Design Responsivo e Moderno:
+
+Descrição: Atualize o design para ser mais moderno e responsivo, garantindo uma boa experiência em dispositivos móveis.
+Tecnologias: Use frameworks de CSS como Bootstrap ou Bulma.
+Interface de Usuário Aprimorada:
+
+Adicionar Barras de Progresso:
+
+Descrição: Exiba barras de progresso que mostram a porcentagem de tempo alocado para cada tópico em relação ao total.
+Implementação: Utilize componentes de progresso do Bootstrap ou crie barras personalizadas com CSS.
+Uso de Gráficos:
+
+Descrição: Apresente o plano de estudo usando gráficos (por exemplo, gráficos de pizza ou barras) para uma visualização mais intuitiva.
+Tecnologias: Use bibliotecas como Chart.js ou D3.js.
+Calendário Interativo:
+
+Descrição: Incorpore um calendário onde o plano de estudo é distribuído ao longo dos dias da semana.
+Implementação: Utilize bibliotecas como FullCalendar para criar um calendário interativo.
+Funcionalidade de Arrastar e Soltar (Drag and Drop):
+
+Descrição: Permita que os usuários reordenem os tópicos no plano de estudo através de arrastar e soltar, ajustando automaticamente o tempo alocado.
+Tecnologias: Use bibliotecas como SortableJS ou implementações de HTML5 Drag and Drop.
+Tema Claro/Escuro:
+
+Descrição: Adicione uma opção para alternar entre temas claro e escuro, melhorando a acessibilidade.
+Implementação: Utilize CSS custom properties (variáveis) e JavaScript para alternar os temas.
+Validação e Mensagens de Erro Amigáveis:
+
+Descrição: Melhore a validação dos campos no frontend e exiba mensagens de erro claras.
+Implementação: Use JavaScript para validação em tempo real e exiba mensagens próximas aos campos.
+Ajuda e Dicas Contextuais:
+
+Descrição: Adicione ícones de ajuda ou tooltips que forneçam informações adicionais quando o usuário passar o mouse sobre certos elementos.
+Tecnologias: Utilize tooltips do Bootstrap ou bibliotecas como Tippy.js.
+Feedback do Usuário no Frontend:
+
+Descrição: Permita que os usuários classifiquem ou forneçam feedback sobre o plano de estudo diretamente na interface.
+Implementação: Adicione um formulário de feedback ou sistema de classificação por estrelas na página de resultados.
+Animações e Transições Suaves:
+
+Descrição: Adicione animações para transições entre páginas ou para elementos que aparecem dinamicamente.
+Tecnologias: Use CSS transitions ou bibliotecas como Animate.css.
+Implementação de PWA (Progressive Web App):
+
+Descrição: Transforme seu aplicativo em uma PWA para que os usuários possam instalá-lo em seus dispositivos e utilizá-lo offline.
+Implementação: Configure manifestos de aplicativo e service work

@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
+from pytube import Search
 
 app = Flask(__name__)
 
@@ -6,52 +7,76 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
-@app.route('/generate-plan', methods=['POST'])
-def generate_plan():
+@app.route('/gera-plano', methods=['POST'])
+def gera_plano():
     data = request.form
-    time_available = int(data['time_available'])  # Tempo disponível (em minutos)
-    time_unit = data.get('time_unit', 'minutes')
-    
-    if time_unit == "time_unit":
-        time_available /= 60
+    tempo_disponivel = int(data['tempo_disponivel'])
+    tempo_unidade = data['tempo_unidade']
 
-    topics = []
-    for i in range(1, int(data['num_topics']) + 1):
-        topic_name = data[f'topic_{i}']
-        priority = data[f'priority_{i}']
-        difficulty = data[f'difficulty_{i}']
-        topics.append({
-            'name': topic_name,
-            'priority': priority,
-            'difficulty': difficulty
+    topicos = []
+    videos_recomendados = {}
+
+    for i in range(1, int(data['num_topicos']) + 1):
+        nome_topico = data[f'topico_{i}']
+        prioridade = data[f'prioridade{i}']
+        dificuldade = data[f'dificuldade_{i}']
+        
+        videos = pesquisar_videos_youtube(nome_topico)
+        videos_recomendados[nome_topico] = videos
+        
+        topicos.append({
+            'name': nome_topico,
+            'priority': prioridade,
+            'difficulty': dificuldade
         })
     
-    # Calcular o peso de cada tópico com base na prioridade e dificuldade
-    total_weight = 0
-    for topic in topics:
-        weight = 1 if topic['priority'] == 'Alta' else 0.5 if topic['priority'] == 'Média' else 0.25
-        weight *= 1 if topic['difficulty'] == 'Fácil' else 1.5 if topic['difficulty'] == 'Médio' else 2
-        topic['weight'] = weight
-        total_weight += weight
+    peso_total = 0
+    for topico in topicos:
+        if topico['priority'] == 'Alta':
+            peso = 1
+        elif topico['priority'] == 'Média':
+            peso = 0.5
+        else:
+            peso = 0.25
+
+        if topico['difficulty'] == 'Fácil':
+            peso *= 1
+        elif topico['difficulty'] == 'Médio':
+            peso *= 1.5
+        else:
+            peso *= 2
+
+        topico['peso'] = peso
+        peso_total += peso
     
-    # Alocar o tempo para cada tópico de forma proporcional
-    study_plan = []
-    total_time = 0
-    for topic in topics:
-        time_allocation = (topic['weight'] / total_weight) * time_available
-        study_plan.append({
-            'order': len(study_plan) + 1,
-            'topic': topic['name'],
-            'time_allocated': round(time_allocation, 2)
+    plano_estudo = []
+    tempo_total = 0
+    for topico in topicos:
+        tempo_alocado = (topico['peso'] / peso_total) * tempo_disponivel
+        plano_estudo.append({
+            'order': len(plano_estudo) + 1,
+            'topic': topico['name'],
+            'time_allocated': round(tempo_alocado, 2)
         })
-        total_time += time_allocation
+        tempo_total += tempo_alocado
 
-    # Ajuste para não ultrapassar o tempo total
-    time_diff = round(time_available - total_time, 2)
-    if time_diff != 0:
-        study_plan[0]['time_allocated'] += time_diff
+    diferença_tempo = round(tempo_disponivel - tempo_total, 2)
+    if diferença_tempo != 0:
+        plano_estudo[0]['time_allocated'] += diferença_tempo
 
-    return render_template('study_plan.html', study_plan=study_plan, total_time=round(total_time, 2))
+    return render_template('study_plan.html', plano_estudo=plano_estudo, total_time=round(tempo_total, 2), videos_recomendados=videos_recomendados, tempo_unidade=tempo_unidade)
+
+
+def pesquisar_videos_youtube(consulta, max_resultados=3):
+    search = Search(consulta)
+    search_results = search.results[:max_resultados]
+    videos = []
+
+    for video in search_results:
+        video_url = f"https://www.youtube.com/watch?v={video.video_id}"
+        videos.append({'title': video.title, 'url': video_url})
+
+    return videos
 
 if __name__ == '__main__':
     app.run(debug=True)

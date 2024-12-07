@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano de Estudos - Resultado</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">📋</div>
+            <h1>Seu Plano de Estudos</h1>
+            <p>Veja abaixo seu plano de estudo e os vídeos recomendados para cada tópico.</p>
+        </header>
+        <main>
+            <div class="study-plan">
+                {% for item in plano_estudo %}
+                <div class="study-plan-item">
+                    <div class="order-number">{{ item.order }}</div>
+                    <div class="study-plan-content">
+                        <h2 class="topic-name">{{ item.topic }}</h2>
+                        <p class="time-allocated">
+                            Tempo alocado:
+                            {% set total_minutes = item.time_allocated|int %}
+                            {% if total_minutes >= 60 %}
+                                {% set horas = total_minutes // 60 %}
+                                {% set minutos = total_minutes % 60 %}
+                                {% if horas == 1 %}
+                                    {{ horas }} hora{% if minutos > 0 %} e {{ minutos }} minutos{% endif %}
+                                {% else %}
+                                    {{ horas }} horas{% if minutos > 0 %} e {{ minutos }} minutos{% endif %}
+                                {% endif %}
+                            {% else %}
+                                {{ total_minutes }} minutos
+                            {% endif %}
+                        </p>
+                        <div class="video-recommendations">
+                            <h3>Vídeos Recomendados:</h3>
+                            <ul>
+                                {% if videos_recomendados[item.topic] %}
+                                    {% for video in videos_recomendados[item.topic] %}
+                                    <li>
+                                        <a href="{{ video.url }}" target="_blank">{{ video.title }}</a>
+                                    </li>
+                                    {% endfor %}
+                                {% else %}
+                                    <li>Nenhum vídeo encontrado para este tópico.</li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="total-time">
+                <strong>Tempo total:</strong>
+                    {% set total_minutes = total_time|int %}
+                    {% if total_minutes >= 60 %}
+                        {% set horas = total_minutes // 60 %}
+                        {% set minutos = total_minutes % 60 %}
+                        {% if minutos > 0 %}
+                            {% if horas == 1 %}
+                                {{ horas }} hora e {{ minutos }} minutos
+                            {% else %}
+                                {{ horas }} horas e {{ minutos }} minutos
+                            {% endif %}
+                        {% else %}
+                            {% if horas == 1 %}
+                                {{ horas }} hora
+                            {% else %}
+                                {{ horas }} horas
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        {{ total_minutes }} minutos
+                    {% endif %}
+            </div>
+            <a href="/" class="back-button">← Voltar ao início</a>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planejador de Estudos</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">🎓</div>
+            <h1>Planejador de Estudos</h1>
+            <p>Organize seu tempo de estudo de forma eficiente, considerando prioridade e dificuldade dos tópicos.</p>
+        </header>
+        <main>
+            <form id="studyForm">
+                <div class="form-group">
+                    <label for="tempo_disponivel">⏳ Tempo Disponível</label>
+                    <div class="time-input">
+                        <input type="number" id="tempo_disponivel" name="tempo_disponivel" min="1" placeholder="Digite o tempo disponível" required>
+                        <select id="tempo_unidade" name="tempo_unidade">
+                            <option value="minutes" selected>Minutos</option>
+                            <option value="hours">Horas</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="topics-header">
+                        <label>📚 Tópicos de Estudo</label>
+                        <button type="button" id="addTopic" class="btn-add">+ Adicionar Tópico</button>
+                    </div>
+                    <div id="topicsContainer"></div>
+                </div>
+                <button type="submit" class="btn-submit">Gerar Plano de Estudos</button>
+            </form>
+        </main>
+    </div>
+    <template id="topicTemplate">
+        <div class="topic-card">
+            <div class="topic-content">
+                <input type="text" class="topic-name" placeholder="Nome do tópico" required>
+                <div class="topic-settings">
+                    <select class="priority" required>
+                        <option value="Alta">Alta</option>
+                        <option value="Média" selected>Média</option>
+                        <option value="Baixa">Baixa</option>
+                    </select>
+                    <select class="difficulty" required>
+                        <option value="Fácil">Fácil</option>
+                        <option value="Médio" selected>Médio</option>
+                        <option value="Difícil">Difícil</option>
+                    </select>
+                </div>
+            </div>
+            <button type="button" class="btn-remove">-</button>
+        </div>
+    </template>
+    <script src="../static/script.js"></script>
+</body>
+</html>

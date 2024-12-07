@@ -22,7 +22,7 @@ Este é um projeto web desenvolvido com **Flask** que ajuda os usuários a organ
 - **Front-End:** HTML, CSS, JavaScript
 - **Bibliotecas de Python:**
   - `Flask`: Para gerenciar rotas e lógica do servidor.
-  - `pytube` e `youtubesearchpython`: Para buscar vídeos no YouTube.
+  - `pytube`: Para buscar vídeos no YouTube.
 - **Template Engine:** Jinja2 (incluso no Flask)
 
 ---

@@ -13,7 +13,6 @@
             <h1>Seu Plano de Estudos</h1>
             <p>Veja abaixo seu plano de estudo e os vídeos recomendados para cada tópico.</p>
         </header>
-
         <main>
             <div class="study-plan">
                 {% for item in plano_estudo %}
@@ -22,17 +21,18 @@
                     <div class="study-plan-content">
                         <h2 class="topic-name">{{ item.topic }}</h2>
                         <p class="time-allocated">
-                            {% if tempo_unidade == "hours" %}
-                                {% set total_hours = item.time_allocated / 60 %}
-                                {% set horas = total_hours|int %}
-                                {% set minutos = ((total_hours - horas) * 60)|int %}
-                                Tempo alocado: 
-                                {{ horas }} hora{% if horas != 1 %}s{% endif %}
-                                {% if minutos > 0 %}
-                                    e {{ minutos }} minuto{% if minutos != 1 %}s{% endif %}
+                            Tempo alocado:
+                            {% set total_minutes = item.time_allocated|int %}
+                            {% if total_minutes >= 60 %}
+                                {% set horas = total_minutes // 60 %}
+                                {% set minutos = total_minutes % 60 %}
+                                {% if horas == 1 %}
+                                    {{ horas }} hora{% if minutos > 0 %} e {{ minutos }} minutos{% endif %}
+                                {% else %}
+                                    {{ horas }} horas{% if minutos > 0 %} e {{ minutos }} minutos{% endif %}
                                 {% endif %}
                             {% else %}
-                                Tempo alocado: {{ "%.2f"|format(item.time_allocated) }} minutos
+                                {{ total_minutes }} minutos
                             {% endif %}
                         </p>
                         <div class="video-recommendations">
@@ -55,11 +55,26 @@
             </div>
             <div class="total-time">
                 <strong>Tempo total:</strong>
-                {% if total_time >= 60 %}
-                    {{ (total_time / 60) | round(2) }} horas
-                {% else %}
-                    {{ total_time }} minutos
-                {% endif %}
+                    {% set total_minutes = total_time|int %}
+                    {% if total_minutes >= 60 %}
+                        {% set horas = total_minutes // 60 %}
+                        {% set minutos = total_minutes % 60 %}
+                        {% if minutos > 0 %}
+                            {% if horas == 1 %}
+                                {{ horas }} hora e {{ minutos }} minutos
+                            {% else %}
+                                {{ horas }} horas e {{ minutos }} minutos
+                            {% endif %}
+                        {% else %}
+                            {% if horas == 1 %}
+                                {{ horas }} hora
+                            {% else %}
+                                {{ horas }} horas
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        {{ total_minutes }} minutos
+                    {% endif %}
             </div>
             <a href="/" class="back-button">← Voltar ao início</a>
         </main>

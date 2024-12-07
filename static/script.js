@@ -1,70 +1,71 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('studyForm');
-    const topicsContainer = document.getElementById('topicsContainer');
-    const addTopicButton = document.getElementById('addTopic');
-    const topicTemplate = document.getElementById('topicTemplate');
+    const formulario = document.getElementById('studyForm');
+    const containerTopicos = document.getElementById('topicsContainer');
+    const botaoAdicionarTopico = document.getElementById('addTopic');
+    const modeloTopico = document.getElementById('topicTemplate');
 
-    // Adicionar o primeiro tópico ao carregar a página
-    addTopic();
+    adicionarTopico();
 
-    // Event listeners
-    addTopicButton.addEventListener('click', addTopic);
-    form.addEventListener('submit', handleSubmit);
+    botaoAdicionarTopico.addEventListener('click', adicionarTopico);
+    formulario.addEventListener('submit', aoEnviarFormulario);
 
-    function addTopic() {
-        const topicElement = document.importNode(topicTemplate.content, true);
-        const removeButton = topicElement.querySelector('.btn-remove');
+    function adicionarTopico() {
+        const elementoTopico = document.importNode(modeloTopico.content, true);
+        const botaoRemover = elementoTopico.querySelector('.btn-remove');
         
-        removeButton.addEventListener('click', function() {
-            if (topicsContainer.children.length > 1) {
+        botaoRemover.addEventListener('click', function() {
+            if (containerTopicos.children.length > 1) {
                 this.closest('.topic-card').remove();
             }
         });
 
-        topicsContainer.appendChild(topicElement);
+        containerTopicos.appendChild(elementoTopico);
     }
 
-    async function handleSubmit(e) {
+    async function aoEnviarFormulario(e) {
         e.preventDefault();
 
         const formData = new FormData();
-        const timeAvailable = document.getElementById('timeAvailable').value;
-        const timeUnit = document.getElementById('timeUnit').value;
-        const topics = topicsContainer.querySelectorAll('.topic-card');
 
-        // Converter tempo para minutos, se necessário
-        const timeAvailableInMinutes = timeUnit === 'hours' ? timeAvailable * 60 : timeAvailable;
+        const tempoDisponivelInput = document.getElementById('tempo_disponivel');
+        const tempoUnidadeSelect = document.getElementById('tempo_unidade');
+        const tempoDisponivel = tempoDisponivelInput.value;
+        const tempoUnidade = tempoUnidadeSelect.value;
 
-        formData.append('time_available', timeAvailableInMinutes);
-        formData.append('num_topics', topics.length);
+        const topicos = containerTopicos.querySelectorAll('.topic-card');
 
-        topics.forEach((topic, index) => {
-            const name = topic.querySelector('.topic-name').value;
-            const priority = topic.querySelector('.priority').value;
-            const difficulty = topic.querySelector('.difficulty').value;
+        const tempoDisponivelEmMinutos = tempoUnidade === 'hours' ? tempoDisponivel * 60 : tempoDisponivel;
 
-            formData.append(`topic_${index + 1}`, name);
-            formData.append(`priority_${index + 1}`, priority);
-            formData.append(`difficulty_${index + 1}`, difficulty);
+        formData.append('tempo_disponivel', tempoDisponivelEmMinutos);
+        formData.append('num_topicos', topicos.length);
+        formData.append('tempo_unidade', tempoUnidade);
+
+        topicos.forEach((topico, indice) => {
+            const nome = topico.querySelector('.topic-name').value;
+            const prioridade = topico.querySelector('.priority').value;
+            const dificuldade = topico.querySelector('.difficulty').value;
+
+            formData.append(`topico_${indice + 1}`, nome);
+            formData.append(`prioridade${indice + 1}`, prioridade);
+            formData.append(`dificuldade_${indice + 1}`, dificuldade);
         });
         
-
         try {
-            const response = await fetch('/generate-plan', {
+            const resposta = await fetch('/gera-plano', {
                 method: 'POST',
                 body: formData
             });
 
-            if (response.ok) {
-                const result = await response.text();
+            if (resposta.ok) {
+                const resultado = await resposta.text();
                 document.open();
-                document.write(result);
+                document.write(resultado);
                 document.close();
             } else {
                 alert('Erro ao gerar o plano de estudos. Por favor, tente novamente.');
             }
-        } catch (error) {
-            console.error('Error:', error);
+        } catch (erro) {
+            console.error('Erro:', erro);
             alert('Erro ao gerar o plano de estudos. Por favor, tente novamente.');
         }
     }

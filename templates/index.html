@@ -11,15 +11,15 @@
         <header>
             <div class="logo">🎓</div>
             <h1>Planejador de Estudos</h1>
-            <p>Organize seu tempo de estudo de forma eficiente com base na prioridade e dificuldade dos tópicos</p>
+            <p>Organize seu tempo de estudo de forma eficiente, considerando prioridade e dificuldade dos tópicos.</p>
         </header>
         <main>
-            <form id="studyForm" action="/generate-plan" method="POST">
+            <form id="studyForm">
                 <div class="form-group">
-                    <label for="timeAvailable">⏳ Tempo Disponível</label>
+                    <label for="tempo_disponivel">⏳ Tempo Disponível</label>
                     <div class="time-input">
-                        <input type="number" id="timeAvailable" name="timeAvailable" min="1" placeholder="Digite o tempo disponível" required>
-                        <select id="timeUnit" name="time_unit">
+                        <input type="number" id="tempo_disponivel" name="tempo_disponivel" min="1" placeholder="Digite o tempo disponível" required>
+                        <select id="tempo_unidade" name="tempo_unidade">
                             <option value="minutes" selected>Minutos</option>
                             <option value="hours">Horas</option>
                         </select>
@@ -59,5 +59,3 @@
     <script src="../static/script.js"></script>
 </body>
 </html>
-
-
